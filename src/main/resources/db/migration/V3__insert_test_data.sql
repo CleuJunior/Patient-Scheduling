@@ -1,0 +1,43 @@
+-- Chamar a procedure e inserir dados na tabela
+CALL InsertPatient('John', 'Doe', '12345678901', 'john.doe@example.com');
+CALL InsertPatient('Jane', 'Smith', '98765432109', 'jane.smith@example.com');
+CALL InsertPatient('Michael', 'Johnson', '45678912304', 'michael.johnson@example.com');
+CALL InsertPatient('Emily', 'Brown', '90817263504', 'emily.brown@example.com');
+CALL InsertPatient('Daniel', 'Wilson', '65478932101', 'daniel.wilson@example.com');
+CALL InsertPatient('Olivia', 'Anderson', '20304050607', 'olivia.anderson@example.com');
+CALL InsertPatient('David', 'Thomas', '90807060504', 'david.thomas@example.com');
+CALL InsertPatient('Sophia', 'Harris', '12309847562', 'sophia.harris@example.com');
+CALL InsertPatient('Jacob', 'Martin', '11122233344', 'jacob.martin@example.com');
+CALL InsertPatient('Isabella', 'Walker', '98765432101', 'isabella.walker@example.com');
+CALL InsertPatient('Liam', 'Jones', '87654321098', 'liam.jones@example.com');
+CALL InsertPatient('Ava', 'Wilson', '34567891203', 'ava.wilson@example.com');
+CALL InsertPatient('Noah', 'Miller', '78945612307', 'noah.miller@example.com');
+CALL InsertPatient('Mia', 'Clark', '21098765403', 'mia.clark@example.com');
+CALL InsertPatient('Ethan', 'Lee', '90876543201', 'ethan.lee@example.com');
+CALL InsertPatient('Charlotte', 'White', '45612378902', 'charlotte.white@example.com');
+CALL InsertPatient('James', 'Smith', '10987654325', 'james.smith@example.com');
+CALL InsertPatient('Amelia', 'Taylor', '98765432102', 'amelia.taylor@example.com');
+CALL InsertPatient('Benjamin', 'Walker', '56789012341', 'benjamin.walker@example.com');
+CALL InsertPatient('Evelyn', 'Brown', '90807060503', 'evelyn.brown@example.com');
+
+-- Inserir dados na tabela schedule utilizando a procedure InsertSchedule
+CALL InsertSchedule('Consulta de rotina', '2023-05-23 14:30:00', 1);
+CALL InsertSchedule('Exame de sangue', '2023-05-25 09:00:00', 2);
+CALL InsertSchedule('Consulta odontológica', '2023-05-27 16:45:00', 3);
+CALL InsertSchedule('Consulta oftalmológica', '2023-06-01 10:15:00', 4);
+CALL InsertSchedule('Fisioterapia', '2023-06-03 14:00:00', 5);
+CALL InsertSchedule('Acompanhamento psicológico', '2023-06-05 11:30:00', 6);
+CALL InsertSchedule('Consulta de rotina', '2023-06-08 15:30:00', 7);
+CALL InsertSchedule('Exame de ultrassom', '2023-06-10 08:45:00', 8);
+CALL InsertSchedule('Consulta dermatológica', '2023-06-12 13:00:00', 9);
+CALL InsertSchedule('Consulta pediátrica', '2023-06-15 09:30:00', 10);
+CALL InsertSchedule('Consulta de rotina', '2023-06-18 14:30:00', 11);
+CALL InsertSchedule('Exame de sangue', '2023-06-21 10:00:00', 12);
+CALL InsertSchedule('Consulta odontológica', '2023-06-24 16:00:00', 13);
+CALL InsertSchedule('Consulta oftalmológica', '2023-06-27 11:15:00', 14);
+CALL InsertSchedule('Fisioterapia', '2023-06-30 15:00:00', 15);
+CALL InsertSchedule('Acompanhamento psicológico', '2023-07-03 12:30:00', 16);
+CALL InsertSchedule('Consulta de rotina', '2023-07-06 16:30:00', 17);
+CALL InsertSchedule('Exame de ultrassom', '2023-07-09 09:45:00', 18);
+CALL InsertSchedule('Consulta dermatológica', '2023-07-12 14:00:00', 19);
+CALL InsertSchedule('Consulta pediátrica', '2023-07-15 10:30:00', 20);
