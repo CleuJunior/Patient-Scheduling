@@ -1,6 +1,5 @@
-use schedule;
+DROP TABLE IF EXISTS patient;
 
-## Tabela de Pacientes
 CREATE TABLE patient (
     id serial PRIMARY KEY,
     name varchar(50),
@@ -9,7 +8,8 @@ CREATE TABLE patient (
     email varchar (100)
 );
 
-## Tabela de Agenda
+DROP TABLE IF EXISTS schedule;
+
 CREATE TABLE schedule (
     id serial PRIMARY KEY,
     description varchar(255),
