@@ -1,5 +1,7 @@
 package com.junior.br.schedule.api.controller;
 
+import com.junior.br.schedule.api.dtos.request.PatientRequest;
+import com.junior.br.schedule.api.dtos.response.PatientResponse;
 import com.junior.br.schedule.domain.entity.Patient;
 import com.junior.br.schedule.domain.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/patient")
@@ -24,32 +25,28 @@ public class PatientController {
     private final PatientService service;
 
     @GetMapping
-    public ResponseEntity<List<Patient>> listAllPatients() {
-        List<Patient> response = this.service.listAllPatient();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<List<PatientResponse>> listAllPatients() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.service.listAllPatient());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> findPatientById(@PathVariable Long id) {
-        Optional<Patient> response = this.service.findPatientById(id);
+    public ResponseEntity<PatientResponse> findPatientById(@PathVariable Long id) {
+        PatientResponse response = this.service.findPatientById(id);
 
-        if (response.isEmpty()) {
+        if (response == null) {
             return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.status(HttpStatus.OK).body(response.get());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping
-    public ResponseEntity<Patient> insertPatient(@RequestBody Patient request) {
-        Patient response =  this.service.insert(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<PatientResponse> insertPatient(@RequestBody Patient request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.service.insert(request));
     }
 
     @PutMapping
-    public ResponseEntity<Patient> updatePatient(@RequestBody Patient request) {
-        Patient response = this.service.insert(request);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<PatientResponse> updatePatient(@RequestBody Patient request) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.service.insert(request));
     }
 
     @DeleteMapping("/{id}")

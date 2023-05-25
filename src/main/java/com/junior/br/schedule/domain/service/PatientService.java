@@ -1,11 +1,14 @@
 package com.junior.br.schedule.domain.service;
 
+import com.junior.br.schedule.api.dtos.request.PatientRequest;
+import com.junior.br.schedule.api.dtos.response.PatientResponse;
+import com.junior.br.schedule.api.dtos.utils.PatientMapperUtil;
 import com.junior.br.schedule.domain.entity.Patient;
+import com.junior.br.schedule.domain.repository.PatientRepository;
 import com.junior.br.schedule.excepetion.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.junior.br.schedule.domain.repository.PatientRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,15 +20,16 @@ import java.util.Optional;
 public class PatientService {
     private final PatientRepository repository;
 
-    public List<Patient> listAllPatient() {
-        return this.repository.findAll();
+    public List<PatientResponse> listAllPatient() {
+        return this.repository.findAll().stream().map(PatientMapperUtil::toPatientResponse).toList();
     }
 
-    public Optional<Patient> findPatientById(Long id) {
-        return this.repository.findById(id);
+    public PatientResponse findPatientById(Long id) {
+        Patient patient = this.repository.findById(id).orElseThrow(RuntimeException::new);
+        return PatientMapperUtil.toPatientResponse(patient);
     }
 
-    public Patient insert(Patient patient) {
+    public PatientResponse insert(Patient patient) {
         boolean hasCpf = false;
         Optional<Patient> optPatient = this.repository.findByCpf(patient.getCpf());
 
@@ -37,7 +41,8 @@ public class PatientService {
             throw new BusinessException("CPF já cadastrado");
         }
 
-        return this.repository.save(patient);
+        this.repository.save(patient);
+        return PatientMapperUtil.toPatientResponse(patient);
     }
 
     public void deletePatient(Long id) {
