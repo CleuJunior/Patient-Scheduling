@@ -21,7 +21,9 @@ public class PatientService {
     private final PatientRepository repository;
 
     public List<PatientResponse> listAllPatient() {
-        return this.repository.findAll().stream().map(PatientMapperUtil::toPatientResponse).toList();
+        return this.repository.findAll().stream()
+                .map(PatientMapperUtil::toPatientResponse)
+                .toList();
     }
 
     public PatientResponse findPatientById(Long id) {
@@ -29,20 +31,31 @@ public class PatientService {
         return PatientMapperUtil.toPatientResponse(patient);
     }
 
-    public PatientResponse insert(Patient patient) {
-        boolean hasCpf = false;
-        Optional<Patient> optPatient = this.repository.findByCpf(patient.getCpf());
+    public PatientResponse insertPatient(PatientRequest patient) {
+        Optional<Patient> optPatientByCPF = this.repository.findByCpf(patient.cpf());
 
-        if (optPatient.isPresent() && !optPatient.get().getId().equals(patient.getId())) {
-            hasCpf = true;
-        }
-
-        if (hasCpf) {
+        if (optPatientByCPF.isPresent()) {
             throw new BusinessException("CPF já cadastrado");
         }
 
-        this.repository.save(patient);
-        return PatientMapperUtil.toPatientResponse(patient);
+        Patient patientToInsert = PatientMapperUtil.toPatient(patient);
+        this.repository.save(patientToInsert);
+
+        return PatientMapperUtil.toPatientResponse(patientToInsert);
+    }
+
+    public PatientResponse updatePatient(Long id, PatientRequest patient) {
+        Optional<Patient> optPatientByCPF = this.repository.findByCpf(patient.cpf());
+        Patient optPatient = this.repository.findById(id).orElseThrow(RuntimeException::new);
+
+        if (optPatientByCPF.isPresent() && !optPatient.getCpf().equals(optPatientByCPF.get().getCpf())) {
+            throw new BusinessException("CPF já cadastrado");
+        }
+
+        PatientMapperUtil.updatePatient(patient, optPatient);
+        this.repository.save(optPatient);
+
+        return PatientMapperUtil.toPatientResponse(optPatient);
     }
 
     public void deletePatient(Long id) {

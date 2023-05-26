@@ -28,4 +28,11 @@ public class PatientMapperUtil {
         );
     }
 
+    public static void updatePatient(PatientRequest patientRequest, Patient patient) {
+        patient.setName(patientRequest.name());
+        patient.setLastName(patientRequest.lastName());
+        patient.setEmail(patientRequest.email());
+        patient.setCpf(patientRequest.cpf());
+    }
+
 }

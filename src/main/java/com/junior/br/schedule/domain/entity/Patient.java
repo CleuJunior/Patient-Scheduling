@@ -34,5 +34,6 @@ public class Patient {
     private String email;
 
     @NonNull
+    @Column(unique=true)
     private String cpf;
 }
