@@ -6,6 +6,7 @@ import com.junior.br.schedule.api.dtos.utils.PatientMapperUtil;
 import com.junior.br.schedule.domain.entity.Patient;
 import com.junior.br.schedule.domain.repository.PatientRepository;
 import com.junior.br.schedule.excepetion.BusinessException;
+import com.junior.br.schedule.excepetion.ExceptionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class PatientService {
     }
 
     public PatientResponse findPatientById(Long id) {
-        Patient patient = this.repository.findById(id).orElseThrow(RuntimeException::new);
+        Patient patient = this.repository.findById(id).orElseThrow(() -> new BusinessException(ExceptionConstants.UNREGISTERED_PATIENT));
         return PatientMapperUtil.toPatientResponse(patient);
     }
 
@@ -35,7 +36,7 @@ public class PatientService {
         Optional<Patient> optPatientByCPF = this.repository.findByCpf(patient.cpf());
 
         if (optPatientByCPF.isPresent()) {
-            throw new BusinessException("CPF já cadastrado");
+            throw new BusinessException(ExceptionConstants.CPF_ALREADY_REGISTERED);
         }
 
         Patient patientToInsert = PatientMapperUtil.toPatient(patient);
@@ -49,7 +50,7 @@ public class PatientService {
         Patient optPatient = this.repository.findById(id).orElseThrow(RuntimeException::new);
 
         if (optPatientByCPF.isPresent() && !optPatient.getCpf().equals(optPatientByCPF.get().getCpf())) {
-            throw new BusinessException("CPF já cadastrado");
+            throw new BusinessException(ExceptionConstants.CPF_ALREADY_REGISTERED);
         }
 
         PatientMapperUtil.updatePatient(patient, optPatient);
@@ -59,6 +60,7 @@ public class PatientService {
     }
 
     public void deletePatient(Long id) {
-        this.repository.deleteById(id);
+        Patient patient = this.repository.findById(id).orElseThrow(() -> new BusinessException(ExceptionConstants.UNREGISTERED_PATIENT));
+        this.repository.delete(patient);
     }
 }
