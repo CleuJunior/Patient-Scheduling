@@ -28,7 +28,8 @@ public class PatientService {
     }
 
     public PatientResponse findPatientById(Long id) {
-        Patient patient = this.repository.findById(id).orElseThrow(() -> new BusinessException(ExceptionConstants.UNREGISTERED_PATIENT));
+        Patient patient = this.repository.findById(id).orElseThrow(
+                () -> new BusinessException(String.format(ExceptionConstants.ID_NOT_FOUND, id)));
         return PatientMapperUtil.toPatientResponse(patient);
     }
 
@@ -60,7 +61,8 @@ public class PatientService {
     }
 
     public void deletePatient(Long id) {
-        Patient patient = this.repository.findById(id).orElseThrow(() -> new BusinessException(ExceptionConstants.UNREGISTERED_PATIENT));
+        Patient patient = this.repository.findById(id).orElseThrow(
+                () -> new BusinessException(String.format(ExceptionConstants.ID_NOT_FOUND, id)));
         this.repository.delete(patient);
     }
 }

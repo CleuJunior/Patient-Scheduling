@@ -2,7 +2,7 @@ package com.junior.br.schedule.api.controller;
 
 import com.junior.br.schedule.api.dtos.request.PatientRequest;
 import com.junior.br.schedule.api.dtos.response.PatientResponse;
-import com.junior.br.schedule.domain.service.PatientService;
+import com.junior.br.schedule.domain.service.ServiceManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,34 +22,34 @@ import java.util.List;
 @RequestMapping("/api/v1/patient")
 @RequiredArgsConstructor
 public class PatientController {
-    private final PatientService service;
+    private final ServiceManager serviceManger;
 
     @GetMapping
     public ResponseEntity<List<PatientResponse>> listAllPatients() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.service.listAllPatient());
+        return ResponseEntity.status(HttpStatus.OK).body(this.serviceManger.getPatientService().listAllPatient());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientResponse> findPatientById(@PathVariable Long id) {
-        PatientResponse response = this.service.findPatientById(id);
+        PatientResponse response = this.serviceManger.getPatientService().findPatientById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping
     public ResponseEntity<PatientResponse> insertPatient(@Valid @RequestBody PatientRequest request) {
-        PatientResponse response = this.service.insertPatient(request);
+        PatientResponse response = this.serviceManger.getPatientService().insertPatient(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientResponse> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientRequest request) {
-        PatientResponse response = this.service.updatePatient(id, request);
+        PatientResponse response = this.serviceManger.getPatientService().updatePatient(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        this.service.deletePatient(id);
+    public ResponseEntity<Void> deletePatientById(@PathVariable Long id) {
+        this.serviceManger.getPatientService().deletePatient(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
