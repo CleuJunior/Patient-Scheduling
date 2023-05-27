@@ -7,4 +7,6 @@ public class ExceptionConstants {
 
     public static final String CPF_ALREADY_REGISTERED = "CPF already registered!";
     public static final String UNREGISTERED_PATIENT = "Unregistered patient!";
+    public static final String PATIENT_NOT_FOUND = "Patient not found!";
+    public static final String ALREADY_APPOINTMENT_TIME = "There is already an appointment for this time!";
 }

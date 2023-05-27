@@ -12,4 +12,5 @@ public record PatientRequest(
         String email,
 
         @NotBlank(message = "Name is mandatory")
-        String cpf) {}
+        String cpf
+) {}
