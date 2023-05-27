@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public record ScheduleResponse(
         Long id,
+        String description,
         LocalDateTime time,
         LocalDateTime dateCreation,
         PatientResponse patient

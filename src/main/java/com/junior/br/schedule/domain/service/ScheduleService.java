@@ -1,5 +1,6 @@
 package com.junior.br.schedule.domain.service;
 
+import com.junior.br.schedule.api.dtos.request.ScheduleRequest;
 import com.junior.br.schedule.api.dtos.response.ScheduleResponse;
 import com.junior.br.schedule.api.dtos.utils.ScheduleMapperUtil;
 import com.junior.br.schedule.domain.entity.Patient;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +29,34 @@ public class ScheduleService {
                 .map(ScheduleMapperUtil::toScheduleResponse)
                 .toList();
     }
-    public Schedule insertSchedule(Schedule schedule) {
-        Optional<Patient> optionalPatient = this.patientRepository.findById(schedule.getPatient().getId());
 
-        if (optionalPatient.isEmpty()) {
-            throw new BusinessException(ExceptionConstants.PATIENT_NOT_FOUND);
-        }
+    public ScheduleResponse findScheduleById(Long id) {
+        Schedule response = this.schedulerepository.findById(id).orElseThrow(
+                () -> new BusinessException(String.format(ExceptionConstants.ID_NOT_FOUND, id)));
 
-        Optional<Schedule> optDate = this.schedulerepository.findByTime(schedule.getDateCreation());
+        return ScheduleMapperUtil.toScheduleResponse(response);
+    }
+    public ScheduleResponse insertSchedule(ScheduleRequest schedule) {
+        Patient patient = this.patientRepository.findById(schedule.patientId()).orElseThrow(
+                () -> new BusinessException(ExceptionConstants.PATIENT_NOT_FOUND));
+
+        Optional<Schedule> optDate = this.schedulerepository.findByTime(schedule.time());
 
         if (optDate.isPresent()) {
             throw new BusinessException(ExceptionConstants.ALREADY_APPOINTMENT_TIME);
         }
 
-        schedule.setPatient(optionalPatient.get());
-        schedule.setDateCreation(LocalDateTime.now());
+        Schedule scheduleToSave = ScheduleMapperUtil.toSchedule(schedule, patient);
+        scheduleToSave = this.schedulerepository.save(scheduleToSave);
 
-        return this.schedulerepository.save(schedule);
+        return ScheduleMapperUtil.toScheduleResponse(scheduleToSave);
+    }
+
+    public void deleteScheduleById(Long id) {
+        Schedule schedule = this.schedulerepository.findById(id).orElseThrow(
+                () -> new BusinessException(String.format(ExceptionConstants.ID_NOT_FOUND, id)));
+
+        this.schedulerepository.delete(schedule);
     }
 
 }
